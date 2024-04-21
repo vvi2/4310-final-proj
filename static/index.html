@@ -35,16 +35,16 @@
     <div id="summary">
       <h1>How The Moon Works</h1>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla
-        pellentesque ornare. Nam fermentum risus id quam blandit bibendum.
-        Aenean at enim venenatis felis lobortis condimentum ut nec nunc. Etiam
-        et sodales arcu, ut sollicitudin arcu. Ut ut posuere neque, in volutpat
-        risus. Etiam et aliquet nibh. Integer nisi mi, scelerisque at finibus
-        ut, lacinia non diam. Donec a leo at lorem mattis mollis. Proin
-        imperdiet tempor elit et tempor. Fusce at lacinia arcu. Curabitur in
-        eros sit amet velit faucibus consequat. Donec iaculis leo non pharetra
-        molestie. Donec non lacus sit amet urna posuere placerat. Donec a nisi
-        vel ipsum vehicula viverra sit amet a metus. Morbi vel bibendum ante.
+        In our entire solar system, the only object that shines with its own
+        light is the Sun. That light always beams onto Earth and Moon from the
+        direction of the Sun, illuminating half of our planet in its orbit and
+        reflecting off the surface of the Moon to create moonlight.
+      </p>
+      <p>
+        Like Earth, the Moon has a day side and a night side, which change as
+        the Moon rotates. The Sun always illuminates half of the Moon while the
+        other half remains dark, but how much we are able to see of that
+        illuminated half changes as the Moon travels through its orbit.
       </p>
     </div>
     <div id="animations" style="display: flex; justify-content: center">
@@ -59,10 +59,26 @@
   <script>
     const animationSvg = d3.select("#mainAnimation");
 
+    function calculatePhase(angle) {
+      const degrees = (angle * 180) / Math.PI;
+      if (degrees == 0) {
+        return "Full  Moon";
+      }
+      if (degrees >= 89 && degrees <= 90) {
+        return "First Quarter";
+      }
+      if (degrees >= 179 && degrees <= 180) {
+        return "New Moon";
+      }
+      if (degrees >= 269 && degrees <= 270) {
+        return "Third Quarter";
+      }
+    }
+
     function rotateClockwise(circle) {
       circle
         .transition()
-        .duration(4000)
+        .duration(6000)
         .ease(d3.easeLinear)
         .attrTween("transform", function () {
           return function (t) {
