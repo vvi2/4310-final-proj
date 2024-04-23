@@ -1,39 +1,28 @@
 <html>
   <head>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Judson"
+      rel="stylesheet"
+    />
     <style>
       body {
-        background-color: #474B54;
-        font-family: "Judson", serif;
+        background-color: #474b54;
+        color: white;
+        font-family: "Judson";
       }
 
       h1 {
-        margin-top: 280;
-        margin-left:120;
-        margin-bottom:40;
-        color: white;
         font-size: 64;
-      }
-      h2{
-        margin-top: 240;
-        margin-left:240;
-        color: white;
-        font-size: 40;
+        font-weight: 400;
+        margin-top: 280;
+        margin-left: 120;
       }
       p {
-        margin-top: 40;
-        margin-left: 280;
-        margin-right: 280;
-        color: white;
-        font-size: 20;
-      }
-      h3{
-        margin-top: 40;
-        margin-left: 280;
-        margin-right: 280;
-        color: white;
-        font-size: 10;
-        
+        margin-left: 200;
+        margin-right: 200;
+        font-weight: lighter;
+        font-size: 22;
       }
 
       .display-none {
@@ -45,34 +34,58 @@
         margin-bottom: 60px;
         padding-right: 60px;
       }
-
-      .mainAnimation {
-        background-color: blue;
+      #background-image1 {
+        position: absolute;
+        top: 0;
+        left: 340;
+        z-index: -1;
+      }
+      #background-image2 {
+        position: absolute;
+        top: 400;
+        left: 0;
+        z-index: -1;
+      }
+      #background-image3 {
+        position: absolute;
+        top: 1550;
+        left: 0;
+        z-index: -1;
+      }
+      #background-image4 {
+        position: absolute;
+        top: 1650;
+        left: 1040;
+        z-index: -1;
       }
     </style>
   </head>
   <body>
     <div id="summary">
       <h1>How The Moon Works</h1>
-      <p>
+      <p style="margin-left: 250;">
         In our entire solar system, the only object that shines with its own
         light is the Sun. That light always beams onto Earth and Moon from the
         direction of the Sun, illuminating half of our planet in its orbit and
         reflecting off the surface of the Moon to create moonlight.
       </p>
-      <p>
+      <p style="margin-left: 250;">
         Like Earth, the Moon has a day side and a night side, which change as
         the Moon rotates. The Sun always illuminates half of the Moon while the
         other half remains dark, but how much we are able to see of that
         illuminated half changes as the Moon travels through its orbit.
       </p>
-      <h3 id="citations">NASA. “Moon Phases - NASA Science.” Science.nasa.gov, science.nasa.gov/moon/moon-phases/.</h3>
+      <h3 id="citations" style="margin-left: 280; font-size:14;">NASA. “Moon Phases - NASA Science.” Science.nasa.gov, science.nasa.gov/moon/moon-phases/.</h3>
+      <img src="images/background1.png" id="background-image1" width="1100" />
+      <img src="images/background2.png" id="background-image2" width="500"/>
+      <img src="images/background3.png" id="background-image3" width="400"/>
+      <img src="images/background4.png" id="background-image4" width="400"/>
     </div>
-    <div id="lunarPhasesSummary">
-      <h2>What Are Lunar Phases?</h2>
+    <div id="lunarPhasesSummary" style="margin-top: 150;">
+      <h2 style="font-size: 40; margin-left: 200;">What Are Lunar Phases?</h2>
       <p>When sunlight is illuminating only the Moon's far side – the side we can't directly see from Earth – that phase is called a new moon. When sunlight illuminates only the Moon's near side – the side that always faces Earth – we call that a full moon.
         The rest of the month, we see a different amount of the daytime side of the Moon each day. These continually changing views of the sunlit part of the Moon are the Moon's phases. The eight lunar phases are, in order: new moon, waxing crescent, first quarter, waxing gibbous, full moon, waning gibbous, third quarter and waning crescent. The cycle repeats once a month (every 29.5 days).</p>
-        <h3 id="citations">NASA. “Moon Phases - NASA Science.” Science.nasa.gov, science.nasa.gov/moon/moon-phases/.</h3>
+        <h3 id="citations" style="margin-left: 200; font-size:14;">NASA. “Moon Phases - NASA Science.” Science.nasa.gov, science.nasa.gov/moon/moon-phases/.</h3>
       </div>
 
     <div id="animations" style="display: flex; justify-content: center">
@@ -80,13 +93,13 @@
         id="mainAnimation"
         width="1300"
         height="600"
-        style="border: 2px solid black; margin-top: 20"
+        style="margin-top: 15"
       ></svg>
     </div>
     <div id="lunarPhasesSummary">
-      <h2>The Full Moon</h2>
+      <h2 style="font-size: 40; margin-left: 200;">The Full Moon</h2>
       <p>A full moon occurs when the side of the Moon facing Earth is fully lit up by the Sun. There are a few different types of unusual full moon types, which include blood moons, supermoons, blue moons, and harvest moons, and others.</p>
-        <h3 id="citations">“Supermoon, Blood Moon, Blue Moon and Harvest Moon | NASA Space Place – NASA Science for Kids.” Nasa.gov, 2014, spaceplace.nasa.gov/full-moons/en/.</h3>
+        <h3 id="citations" style="margin-left: 200; font-size:14;">“Supermoon, Blood Moon, Blue Moon and Harvest Moon | NASA Space Place – NASA Science for Kids.” Nasa.gov, 2014, spaceplace.nasa.gov/full-moons/en/.</h3>
       </div>
     <div id="filters">
       <svg>
@@ -140,12 +153,13 @@
       .attr("class", `moonCycle`)
       .attr("transform", `translate(0, 50)`);
     canvas
-      .append("circle")
-      .attr("class", `sun`)
-      .attr("r", 70)
-      .attr("fill", "#FFDF00")
-      .attr("cx", 350)
-      .attr("cy", 250);
+      .append("image")
+      .attr("class", "sun")
+      .attr("xlink:href", "images/sun.png")
+      .attr("width", 240)
+      .attr("height", 240)
+      .attr("x", 230)
+      .attr("y", 130);
     canvas
       .append("circle")
       .attr("class", "earthRotation")
@@ -157,12 +171,14 @@
       .attr("cy", 250)
       .attr("stroke-dasharray", "10,20");
     canvas
-      .append("circle")
-      .attr("class", `earth`)
-      .attr("r", 40)
-      .attr("fill", "blue")
-      .attr("cx", 600)
-      .attr("cy", 240);
+      .append("image")
+      .attr("class", "earth")
+      .attr("xlink:href", "images/earth.png")
+      .attr("width", 100)
+      .attr("height", 100)
+      .attr("x", 550)
+      .attr("y", 190);
+
     canvas
       .append("circle")
       .attr("class", "moonRotation")
@@ -174,12 +190,13 @@
       .attr("cy", 240)
       .attr("stroke-dasharray", "6,6");
     canvas
-      .append("circle")
-      .attr("class", `moon`)
-      .attr("r", 20)
-      .attr("fill", "darkgray")
-      .attr("cx", 520)
-      .attr("cy", 240)
+      .append("image")
+      .attr("class", "moon")
+      .attr("xlink:href", "images/rightSideRotatingMoon.png")
+      .attr("height", 50)
+      .attr("width", 50)
+      .attr("x", 495)
+      .attr("y", 215)
       .call(rotateClockwise);
   </script>
 </html>
