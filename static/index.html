@@ -132,7 +132,7 @@
     function rotateClockwise(circle) {
       circle
         .transition()
-        .duration(6000)
+        .duration(8000)
         .ease(d3.easeLinear)
         .attrTween("transform", function () {
           return function (t) {
@@ -140,6 +140,18 @@
             const radius = 80;
             const newX = 80 + radius * Math.cos(angle);
             const newY = 0 + radius * Math.sin(angle);
+            if(calculatePhase(angle) === "Full  Moon"){
+              console.log("full");
+            }
+            else if(calculatePhase(angle) === "First Quarter"){
+              console.log("first");
+            }
+            else if(calculatePhase(angle) === "New Moon"){
+              console.log("new");
+            }
+            else if(calculatePhase(angle) === "Third Quarter"){
+              console.log("third");
+            }
             return `translate(${newX},${newY})`;
           };
         })
@@ -189,10 +201,10 @@
       .attr("cx", 600)
       .attr("cy", 240)
       .attr("stroke-dasharray", "6,6");
-    canvas
+    const moon = canvas
       .append("image")
       .attr("class", "moon")
-      .attr("xlink:href", "images/rightSideRotatingMoon.png")
+      .attr("xlink:href", "images/rotatingMoon.png")
       .attr("height", 50)
       .attr("width", 50)
       .attr("x", 495)
