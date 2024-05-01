@@ -78,7 +78,7 @@
         left: 520;
         z-index: -1;
       }
-      .button{
+      .button {
         cursor: pointer;
         user-select: none;
       }
@@ -132,13 +132,17 @@
       </h3>
     </div>
 
-    <div id="animations" style="display: flex; justify-content: center">
+    <div
+      id="animations"
+      style="display: flex; justify-content: center; flex-direction: column"
+    >
       <svg
         id="mainAnimation"
         width="1300"
-        height="600"
+        height="750"
         style="margin-top: 15"
       ></svg>
+      <input type="checkbox" id="play-pause" onclick="{play_pause()}" checked />
     </div>
     <div id="lunarPhasesSummary">
       <h2 style="font-size: 40; margin-left: 200">The Full Moon</h2>
@@ -220,7 +224,7 @@
     function calculatePhase(angle) {
       const degrees = (angle * 180) / Math.PI;
       if (degrees == 0) {
-        return "Full  Moon";
+        return "Full Moon";
       }
       if (degrees >= 89 && degrees <= 90) {
         return "First Quarter";
@@ -233,38 +237,92 @@
       }
     }
 
-    function rotateClockwise(circle) {
+    var earthR = 0;
+    var moonCircleR = 0;
+    var moonR = 0;
+
+    const play_pause = () => {
+      if (document.getElementById("play-pause").checked) {
+        // PLAY
+        // d3.selectAll("circle").transition();
+        console.log("earthR", earthR);
+        console.log("moonCircleR", moonCircleR);
+        console.log("moonR", moonR);
+      } else {
+        // PAUSE
+        // d3.selectAll("circle").interrupt();
+        earthR = d3.select(".earth").attr("t");
+        moonCircleR = d3.select(".moonRotation").attr("t");
+        moonR = d3.select(".moon").attr("t");
+      }
+    };
+
+    function rotateMoonClockwise(circle) {
       circle
         .transition()
-        .duration(8000)
+        .duration(2732)
         .ease(d3.easeLinear)
         .attrTween("transform", function () {
           return function (t) {
+            circle.attr("t", t);
             const angle = t * 2 * Math.PI;
             const radius = 80;
-            const newX = 80 + radius * Math.cos(angle);
-            const newY = 0 + radius * Math.sin(angle);
-            if (calculatePhase(angle) === "Full  Moon") {
-              console.log("full");
-            } else if (calculatePhase(angle) === "First Quarter") {
-              console.log("first");
-            } else if (calculatePhase(angle) === "New Moon") {
-              console.log("new");
-            } else if (calculatePhase(angle) === "Third Quarter") {
-              console.log("third");
+            var earthX = 0;
+            var earthY = 0;
+            const earthT = d3.select(".earth").attr("transform");
+            if (earthT !== null) {
+              const split1 = earthT.split("(");
+              if (split1.length > 1) {
+                const split2 = split1[1].split(")")[0];
+                const split3 = split2.split(",");
+                earthX = parseFloat(split3[0]);
+                earthY = parseFloat(split3[1]);
+              }
             }
+
+            const newX = 80 + radius * Math.cos(angle) + earthX;
+            const newY = 0 + radius * Math.sin(angle) + earthY;
+            // if (calculatePhase(angle) === "Full Moon") {
+            //   console.log("full");
+            // } else if (calculatePhase(angle) === "First Quarter") {
+            //   console.log("first");
+            // } else if (calculatePhase(angle) === "New Moon") {
+            //   console.log("new");
+            // } else if (calculatePhase(angle) === "Third Quarter") {
+            //   console.log("third");
+            // }
             return `translate(${newX},${newY})`;
           };
         })
         .on("end", function () {
-          rotateClockwise(circle);
+          rotateMoonClockwise(circle);
+        });
+    }
+
+    function rotateEarth(circle) {
+      circle
+        .transition()
+        .duration(36524)
+        .ease(d3.easeLinear)
+        .attrTween("transform", function () {
+          return function (t) {
+            circle.attr("t", t);
+            const angle = t * 2 * Math.PI;
+            const radius = 250;
+            const newX = 250 + radius * Math.cos(angle);
+            const newY = 250 + radius * Math.sin(angle);
+            return `translate(${newX},${newY})`;
+          };
+        })
+        .on("end", function () {
+          rotateEarth(circle);
         });
     }
 
     const canvas = animationSvg
       .append("g")
       .attr("class", `moonCycle`)
-      .attr("transform", `translate(0, 50)`);
+      .attr("transform", `translate(0, 125)`);
     canvas
       .append("image")
       .attr("class", "sun")
@@ -289,8 +347,8 @@
       .attr("xlink:href", "images/earth.png")
       .attr("width", 100)
       .attr("height", 100)
-      .attr("x", 550)
-      .attr("y", 190);
+      .attr("x", 50)
+      .attr("y", -55);
 
     canvas
       .append("circle")
@@ -299,17 +357,19 @@
       .attr("stroke", "darkgrey")
       .attr("stroke-width", 2)
       .attr("fill", "none")
-      .attr("cx", 600)
-      .attr("cy", 240)
-      .attr("stroke-dasharray", "6,6");
+      .attr("cx", 100)
+      .attr("cy", -5)
+      .attr("stroke-dasharray", "6,6")
+      .call(rotateEarth);
     const moon = canvas
       .append("image")
       .attr("class", "moon")
       .attr("xlink:href", "images/rotatingMoon.png")
       .attr("height", 50)
       .attr("width", 50)
-      .attr("x", 495)
-      .attr("y", 215)
-      .call(rotateClockwise);
+      .attr("x", -5)
+      .attr("y", -30)
+      .call(rotateMoonClockwise);
+    d3.select(".earth").call(rotateEarth);
   </script>
 </html>
