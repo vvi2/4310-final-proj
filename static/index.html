@@ -18,16 +18,16 @@
         margin-top: 280;
         margin-left: 120;
       }
-      h2{
+      h2 {
         font-size: 40;
         margin-top: 280;
         margin-left: 200;
       }
-      h3{
+      h3 {
         margin-left: 200;
-        font-size:14;
+        font-size: 14;
       }
-      h4{
+      h4 {
         text-align: center;
         margin-top: 160;
         font-size: 24;
@@ -78,36 +78,59 @@
         left: 520;
         z-index: -1;
       }
+      .button{
+        cursor: pointer;
+        user-select: none;
+      }
+      .button text {
+        user-select: none;
+      }
     </style>
   </head>
   <body>
     <div id="summary">
       <h1>How The Moon Works</h1>
-      <p style="margin-left: 250;">
+      <p style="margin-left: 250">
         In our entire solar system, the only object that shines with its own
         light is the Sun. That light always beams onto Earth and Moon from the
         direction of the Sun, illuminating half of our planet in its orbit and
         reflecting off the surface of the Moon to create moonlight.
       </p>
-      <p style="margin-left: 250;">
+      <p style="margin-left: 250">
         Like Earth, the Moon has a day side and a night side, which change as
         the Moon rotates. The Sun always illuminates half of the Moon while the
         other half remains dark, but how much we are able to see of that
         illuminated half changes as the Moon travels through its orbit.
       </p>
-      <h3 id="citations">NASA. “Moon Phases - NASA Science.” Science.nasa.gov, science.nasa.gov/moon/moon-phases/.</h3>
+      <h3 id="citations">
+        NASA. “Moon Phases - NASA Science.” Science.nasa.gov,
+        science.nasa.gov/moon/moon-phases/.
+      </h3>
       <img src="images/background1.png" id="background-image1" width="1100" />
-      <img src="images/background2.png" id="background-image2" width="500"/>
-      <img src="images/background3.png" id="background-image3" width="400"/>
+      <img src="images/background2.png" id="background-image2" width="500" />
+      <img src="images/background3.png" id="background-image3" width="400" />
       <img src="images/background4.png" id="background-image4" width="400" />
       <img src="images/background5.png" id="background-image5" width="400" />
     </div>
-    <div id="lunarPhasesSummary" style="margin-top: 150;">
-      <h2 style="font-size: 40; margin-left: 200;">What Are Lunar Phases?</h2>
-      <p>When sunlight is illuminating only the Moon's far side – the side we can't directly see from Earth – that phase is called a new moon. When sunlight illuminates only the Moon's near side – the side that always faces Earth – we call that a full moon.
-        The rest of the month, we see a different amount of the daytime side of the Moon each day. These continually changing views of the sunlit part of the Moon are the Moon's phases. The eight lunar phases are, in order: new moon, waxing crescent, first quarter, waxing gibbous, full moon, waning gibbous, third quarter and waning crescent. The cycle repeats once a month (every 29.5 days).</p>
-        <h3 id="citations">NASA. “Moon Phases - NASA Science.” Science.nasa.gov, science.nasa.gov/moon/moon-phases/.</h3>
-      </div>
+    <div id="lunarPhasesSummary" style="margin-top: 150">
+      <h2 style="font-size: 40; margin-left: 200">What Are Lunar Phases?</h2>
+      <p>
+        When sunlight is illuminating only the Moon's far side – the side we
+        can't directly see from Earth – that phase is called a new moon. When
+        sunlight illuminates only the Moon's near side – the side that always
+        faces Earth – we call that a full moon. The rest of the month, we see a
+        different amount of the daytime side of the Moon each day. These
+        continually changing views of the sunlit part of the Moon are the Moon's
+        phases. The eight lunar phases are, in order: new moon, waxing
+        crescent, first quarter, waxing gibbous, full moon, waning
+        gibbous, third quarter and waning crescent. The cycle repeats once a
+        month (every 29.5 days).
+      </p>
+      <h3 id="citations">
+        NASA. “Moon Phases - NASA Science.” Science.nasa.gov,
+        science.nasa.gov/moon/moon-phases/.
+      </h3>
+    </div>
 
     <div id="animations" style="display: flex; justify-content: center">
       <svg
@@ -118,10 +141,19 @@
       ></svg>
     </div>
     <div id="lunarPhasesSummary">
-      <h2 style="font-size: 40; margin-left: 200;">The Full Moon</h2>
-      <p>A full moon occurs when the side of the Moon facing Earth is fully lit up by the Sun. There are a few different types of unusual full moon types, which include blood moons, supermoons, blue moons, and harvest moons, and others.</p>
-        <h3 id="citations">“Supermoon, Blood Moon, Blue Moon and Harvest Moon | NASA Space Place – NASA Science for Kids.” Nasa.gov, 2014, spaceplace.nasa.gov/full-moons/en/.</h3>
-      </div>
+      <h2 style="font-size: 40; margin-left: 200">The Full Moon</h2>
+      <p>
+        A full moon occurs when the side of the Moon facing Earth is fully lit
+        up by the Sun. There are a few different types of unusual full moon
+        types, which include blood moons, supermoons, blue moons, and harvest
+        moons, and others.
+      </p>
+      <h3 id="citations">
+        “Supermoon, Blood Moon, Blue Moon and Harvest Moon | NASA Space Place –
+        NASA Science for Kids.” Nasa.gov, 2014,
+        spaceplace.nasa.gov/full-moons/en/.
+      </h3>
+    </div>
     <div id="filters">
       <h4>Special Types of Full Moons</h4>
       <svg
@@ -134,6 +166,56 @@
   </body>
   <script>
     const animationSvg = d3.select("#mainAnimation");
+    const filtersSvg = d3.select("#fullMoonFilters");
+
+    const buttonWidths = [139, 143, 131, 159];
+
+    const handleFilterClick = (moonIndex, svg, event) => {
+      event.preventDefault();
+      const box = svg.select(`.filter-${moonIndex}`);
+      const moonText = svg.select(`.filter-text-${moonIndex}`);
+      if (box.attr("fill") === "#7E8187") {
+        box.attr("fill", "#DADBDD");
+        moonText.style("fill", "#474B54");
+      } else {
+        box.attr("fill", "#7E8187");
+        moonText.style("fill", "white");
+      }
+    };
+
+    const addFilterButtons = (moonTypes, svg) => {
+      moonTypes.forEach((moonType, i) => {
+        const button = svg
+          .append("g")
+          .attr("class", "button")
+          .attr("transform", `translate(${i * 200 + 333}, 0)`)
+          .on("click", (event) => handleFilterClick(i, svg, event));
+
+        button
+          .append("rect")
+          .attr("class", `filter-${i}`)
+          .attr("width", buttonWidths[i])
+          .attr("height", 30)
+          .attr("y", 0)
+          .style("margin", "20")
+          .attr("fill", "#7E8187")
+          .attr("rx", 10)
+          .attr("ry", 10);
+
+        button
+          .append("text")
+          .attr("class", `filter-text-${i}`)
+          .text(moonType)
+          .attr("x", 20)
+          .attr("y", 20)
+          .style("font-size", "20px")
+          .style("fill", "white");
+      });
+    };
+
+    const filters = ["Supermoon", "Blood Moon", "Blue Moon", "Harvest Moon"];
+
+    addFilterButtons(filters, filtersSvg);
 
     function calculatePhase(angle) {
       const degrees = (angle * 180) / Math.PI;
@@ -162,16 +244,13 @@
             const radius = 80;
             const newX = 80 + radius * Math.cos(angle);
             const newY = 0 + radius * Math.sin(angle);
-            if(calculatePhase(angle) === "Full  Moon"){
+            if (calculatePhase(angle) === "Full  Moon") {
               console.log("full");
-            }
-            else if(calculatePhase(angle) === "First Quarter"){
+            } else if (calculatePhase(angle) === "First Quarter") {
               console.log("first");
-            }
-            else if(calculatePhase(angle) === "New Moon"){
+            } else if (calculatePhase(angle) === "New Moon") {
               console.log("new");
-            }
-            else if(calculatePhase(angle) === "Third Quarter"){
+            } else if (calculatePhase(angle) === "Third Quarter") {
               console.log("third");
             }
             return `translate(${newX},${newY})`;
