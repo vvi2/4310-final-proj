@@ -169,207 +169,215 @@
     </div>
   </body>
   <script>
-    const animationSvg = d3.select("#mainAnimation");
-    const filtersSvg = d3.select("#fullMoonFilters");
+    const loadData = async () => {
+      const daysData = await d3.json("data/days.json");
+      const moonData = await d3.json("data/reverse_moon_data.json");
+      const reverseData = await d3.json("data/moon_data.json");
+      const reverseDaysData = await d3.json("data/daysReverse.json");
 
-    const buttonWidths = [139, 143, 131, 159];
+      console.log("data fetched");
 
-    const handleFilterClick = (moonIndex, svg, event) => {
-      event.preventDefault();
-      const box = svg.select(`.filter-${moonIndex}`);
-      const moonText = svg.select(`.filter-text-${moonIndex}`);
-      if (box.attr("fill") === "#7E8187") {
-        box.attr("fill", "#DADBDD");
-        moonText.style("fill", "#474B54");
-      } else {
-        box.attr("fill", "#7E8187");
-        moonText.style("fill", "white");
+      const animationSvg = d3.select("#mainAnimation");
+      const filtersSvg = d3.select("#fullMoonFilters");
+
+      const buttonWidths = [139, 143, 131, 159];
+
+      const handleFilterClick = (moonIndex, svg, event) => {
+        event.preventDefault();
+        const box = svg.select(`.filter-${moonIndex}`);
+        const moonText = svg.select(`.filter-text-${moonIndex}`);
+        if (box.attr("fill") === "#7E8187") {
+          box.attr("fill", "#DADBDD");
+          moonText.style("fill", "#474B54");
+        } else {
+          box.attr("fill", "#7E8187");
+          moonText.style("fill", "white");
+        }
+      };
+
+      const addFilterButtons = (moonTypes, svg) => {
+        moonTypes.forEach((moonType, i) => {
+          const button = svg
+            .append("g")
+            .attr("class", "button")
+            .attr("transform", `translate(${i * 200 + 333}, 0)`)
+            .on("click", (event) => handleFilterClick(i, svg, event));
+
+          button
+            .append("rect")
+            .attr("class", `filter-${i}`)
+            .attr("width", buttonWidths[i])
+            .attr("height", 30)
+            .attr("y", 0)
+            .style("margin", "20")
+            .attr("fill", "#7E8187")
+            .attr("rx", 10)
+            .attr("ry", 10);
+
+          button
+            .append("text")
+            .attr("class", `filter-text-${i}`)
+            .text(moonType)
+            .attr("x", 20)
+            .attr("y", 20)
+            .style("font-size", "20px")
+            .style("fill", "white");
+        });
+      };
+
+      const filters = ["Supermoon", "Blood Moon", "Blue Moon", "Harvest Moon"];
+
+      addFilterButtons(filters, filtersSvg);
+
+      const round = (num) => parseFloat(num).toFixed(4);
+      // Math.round((parseFloat(num) + Number.EPSILON) * 100) / 100;
+
+      console.log(daysData);
+      console.log(moonData);
+      console.log(reverseData);
+
+      var currentYear = 2004;
+
+      function calculatePhase() {
+        // instead of using moon and earth position to find what moon it is, use the dataset to determine the phase based on the date
+        // find date by using the position of the earth
+
+        const e = round(d3.select(".earth").attr("t"));
       }
-    };
 
-    const addFilterButtons = (moonTypes, svg) => {
-      moonTypes.forEach((moonType, i) => {
-        const button = svg
-          .append("g")
-          .attr("class", "button")
-          .attr("transform", `translate(${i * 200 + 333}, 0)`)
-          .on("click", (event) => handleFilterClick(i, svg, event));
+      var earthR = 0;
+      var moonCircleR = 0;
+      var moonR = 0;
 
-        button
-          .append("rect")
-          .attr("class", `filter-${i}`)
-          .attr("width", buttonWidths[i])
-          .attr("height", 30)
-          .attr("y", 0)
-          .style("margin", "20")
-          .attr("fill", "#7E8187")
-          .attr("rx", 10)
-          .attr("ry", 10);
+      const play_pause = () => {
+        if (document.getElementById("play-pause").checked) {
+          // PLAY
+          // d3.selectAll("circle").transition();
+          console.log("earthR", earthR);
+          console.log("moonCircleR", moonCircleR);
+          console.log("moonR", moonR);
+        } else {
+          // PAUSE
+          // d3.selectAll("circle").interrupt();
+          earthR = d3.select(".earth").attr("t");
+          moonCircleR = d3.select(".moonRotation").attr("t");
+          moonR = d3.select(".moon").attr("t");
+        }
+      };
 
-        button
-          .append("text")
-          .attr("class", `filter-text-${i}`)
-          .text(moonType)
-          .attr("x", 20)
-          .attr("y", 20)
-          .style("font-size", "20px")
-          .style("fill", "white");
-      });
-    };
-
-    const filters = ["Supermoon", "Blood Moon", "Blue Moon", "Harvest Moon"];
-
-    addFilterButtons(filters, filtersSvg);
-
-    function calculatePhase(angle) {
-      const degrees = (angle * 180) / Math.PI;
-      if (degrees == 0) {
-        return "Full Moon";
-      }
-      if (degrees >= 89 && degrees <= 90) {
-        return "First Quarter";
-      }
-      if (degrees >= 179 && degrees <= 180) {
-        return "New Moon";
-      }
-      if (degrees >= 269 && degrees <= 270) {
-        return "Third Quarter";
-      }
-    }
-
-    var earthR = 0;
-    var moonCircleR = 0;
-    var moonR = 0;
-
-    const play_pause = () => {
-      if (document.getElementById("play-pause").checked) {
-        // PLAY
-        // d3.selectAll("circle").transition();
-        console.log("earthR", earthR);
-        console.log("moonCircleR", moonCircleR);
-        console.log("moonR", moonR);
-      } else {
-        // PAUSE
-        // d3.selectAll("circle").interrupt();
-        earthR = d3.select(".earth").attr("t");
-        moonCircleR = d3.select(".moonRotation").attr("t");
-        moonR = d3.select(".moon").attr("t");
-      }
-    };
-
-    function rotateMoonClockwise(circle) {
-      circle
-        .transition()
-        .duration(2732)
-        .ease(d3.easeLinear)
-        .attrTween("transform", function () {
-          return function (t) {
-            circle.attr("t", t);
-            const angle = t * 2 * Math.PI;
-            const radius = 80;
-            var earthX = 0;
-            var earthY = 0;
-            const earthT = d3.select(".earth").attr("transform");
-            if (earthT !== null) {
-              const split1 = earthT.split("(");
-              if (split1.length > 1) {
-                const split2 = split1[1].split(")")[0];
-                const split3 = split2.split(",");
-                earthX = parseFloat(split3[0]);
-                earthY = parseFloat(split3[1]);
+      function rotateMoonClockwise(circle) {
+        circle
+          .transition()
+          .duration(5464)
+          .ease(d3.easeLinear)
+          .attrTween("transform", function () {
+            return function (t) {
+              circle.attr("t", t);
+              const angle = t * 2 * Math.PI;
+              const radius = 80;
+              var earthX = 0;
+              var earthY = 0;
+              const earthT = d3.select(".earth").attr("transform");
+              if (earthT !== null) {
+                const split1 = earthT.split("(");
+                if (split1.length > 1) {
+                  const split2 = split1[1].split(")")[0];
+                  const split3 = split2.split(",");
+                  earthX = parseFloat(split3[0]);
+                  earthY = parseFloat(split3[1]);
+                }
               }
-            }
 
-            const newX = 80 + radius * Math.cos(angle) + earthX;
-            const newY = 0 + radius * Math.sin(angle) + earthY;
-            // if (calculatePhase(angle) === "Full Moon") {
-            //   console.log("full");
-            // } else if (calculatePhase(angle) === "First Quarter") {
-            //   console.log("first");
-            // } else if (calculatePhase(angle) === "New Moon") {
-            //   console.log("new");
-            // } else if (calculatePhase(angle) === "Third Quarter") {
-            //   console.log("third");
-            // }
-            return `translate(${newX},${newY})`;
-          };
-        })
-        .on("end", function () {
-          rotateMoonClockwise(circle);
-        });
-    }
+              const newX = 80 + radius * Math.cos(angle) + earthX;
+              const newY = 0 + radius * Math.sin(angle) + earthY;
+              calculatePhase();
+              return `translate(${newX},${newY})`;
+            };
+          })
+          .on("end", function () {
+            rotateMoonClockwise(circle);
+          });
+      }
 
-    function rotateEarth(circle) {
-      circle
-        .transition()
-        .duration(36524)
-        .ease(d3.easeLinear)
-        .attrTween("transform", function () {
-          return function (t) {
-            circle.attr("t", t);
-            const angle = t * 2 * Math.PI;
-            const radius = 250;
-            const newX = 250 + radius * Math.cos(angle);
-            const newY = 250 + radius * Math.sin(angle);
-            return `translate(${newX},${newY})`;
-          };
-        })
-        .on("end", function () {
-          rotateEarth(circle);
-        });
-    }
+      function rotateEarth(circle) {
+        console.log(currentYear);
+        if (currentYear % 1 === 0) {
+          d3.select(".earth").attr("currentYear", currentYear);
+        }
+        circle
+          .transition()
+          .duration(73048)
+          .ease(d3.easeLinear)
+          .attrTween("transform", function () {
+            return function (t) {
+              circle.attr("t", t);
+              const angle = t * 2 * Math.PI;
+              const radius = 250;
+              const newX = 250 + radius * Math.cos(angle);
+              const newY = 250 + radius * Math.sin(angle);
+              return `translate(${newX},${newY})`;
+            };
+          })
+          .on("end", function () {
+            rotateEarth(circle);
+          });
+        currentYear += 0.5;
+      }
 
-    const canvas = animationSvg
-      .append("g")
-      .attr("class", `moonCycle`)
-      .attr("transform", `translate(0, 125)`);
-    canvas
-      .append("image")
-      .attr("class", "sun")
-      .attr("xlink:href", "images/sun.png")
-      .attr("width", 240)
-      .attr("height", 240)
-      .attr("x", 230)
-      .attr("y", 130);
-    canvas
-      .append("circle")
-      .attr("class", "earthRotation")
-      .attr("r", 250)
-      .attr("stroke", "darkgrey")
-      .attr("stroke-width", 2)
-      .attr("fill", "none")
-      .attr("cx", 350)
-      .attr("cy", 250)
-      .attr("stroke-dasharray", "10,20");
-    canvas
-      .append("image")
-      .attr("class", "earth")
-      .attr("xlink:href", "images/earth.png")
-      .attr("width", 100)
-      .attr("height", 100)
-      .attr("x", 50)
-      .attr("y", -55);
+      const canvas = animationSvg
+        .append("g")
+        .attr("class", `moonCycle`)
+        .attr("transform", `translate(0, 125)`);
+      canvas
+        .append("image")
+        .attr("class", "sun")
+        .attr("xlink:href", "images/sun.png")
+        .attr("width", 240)
+        .attr("height", 240)
+        .attr("x", 230)
+        .attr("y", 130);
+      canvas
+        .append("circle")
+        .attr("class", "earthRotation")
+        .attr("r", 250)
+        .attr("stroke", "darkgrey")
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr("cx", 350)
+        .attr("cy", 250)
+        .attr("stroke-dasharray", "10,20");
+      canvas
+        .append("image")
+        .attr("class", "earth")
+        .attr("xlink:href", "images/earth.png")
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 50)
+        .attr("y", -55);
 
-    canvas
-      .append("circle")
-      .attr("class", "moonRotation")
-      .attr("r", 80)
-      .attr("stroke", "darkgrey")
-      .attr("stroke-width", 2)
-      .attr("fill", "none")
-      .attr("cx", 100)
-      .attr("cy", -5)
-      .attr("stroke-dasharray", "6,6")
-      .call(rotateEarth);
-    const moon = canvas
-      .append("image")
-      .attr("class", "moon")
-      .attr("xlink:href", "images/rotatingMoon.png")
-      .attr("height", 50)
-      .attr("width", 50)
-      .attr("x", -5)
-      .attr("y", -30)
-      .call(rotateMoonClockwise);
-    d3.select(".earth").call(rotateEarth);
+      canvas
+        .append("circle")
+        .attr("class", "moonRotation")
+        .attr("r", 80)
+        .attr("stroke", "darkgrey")
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr("cx", 100)
+        .attr("cy", -5)
+        .attr("stroke-dasharray", "6,6")
+        .call(rotateEarth);
+      const moon = canvas
+        .append("image")
+        .attr("class", "moon")
+        .attr("xlink:href", "images/rotatingMoon.png")
+        .attr("height", 50)
+        .attr("width", 50)
+        .attr("x", -5)
+        .attr("y", -30)
+        .call(rotateMoonClockwise);
+      d3.select(".earth").call(rotateEarth);
+    };
+
+    loadData();
   </script>
 </html>
