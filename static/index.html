@@ -73,10 +73,8 @@
         z-index: -1;
       }
       #background-image5 {
-        position: absolute;
         top: 2600;
         left: 520;
-        z-index: -1;
       }
       .button {
         cursor: pointer;
@@ -84,6 +82,13 @@
       }
       .button text {
         user-select: none;
+      }
+      #specialMoon {
+        margin-left: 74;
+        margin-top: 82;
+      }
+      #specialMoonDescription {
+        margin-left: 74;
       }
     </style>
   </head>
@@ -110,7 +115,6 @@
       <img src="images/background2.png" id="background-image2" width="500" />
       <img src="images/background3.png" id="background-image3" width="400" />
       <img src="images/background4.png" id="background-image4" width="400" />
-      <img src="images/background5.png" id="background-image5" width="400" />
     </div>
     <div id="lunarPhasesSummary" style="margin-top: 150">
       <h2 style="font-size: 40; margin-left: 200">What Are Lunar Phases?</h2>
@@ -163,10 +167,49 @@
       <svg
         id="fullMoonFilters"
         width="1300"
-        height="600"
+        height="50"
         style="display: flex; justify-content: center; margin-top: 20"
       ></svg>
+      <div
+      id="specialMoonDescription-0"
+        style="
+          display: flex;
+          flex-direction: row;
+          margin-left: 150;
+          margin-top: 50;
+          align-items: center;
+          justify-content: center;
+          display: none;
+        "
+      >
+        <img
+          src="images/superMoon.png"
+          id="supermoon-img"
+          width="440"
+          height="440"
+        />
+        <div>
+          <h2 id="specialMoon">SUPER MOON</h2>
+          <p id="specialMoonDescription">
+            A "supermoon" appears to us as a larger-than-usual Moon in our night
+            sky. A supermoon looks larger just because it's a bit closer to
+            Earth. "Supermoon" is actually just a nickname for what astronomers
+            call a perigean full moon – a moon that is full and at its closest
+            point in its orbit around Earth.
+          </p>
+          <h3 id="specialMoonDescription">
+            “Supermoon, Blood Moon, Blue Moon and Harvest Moon | NASA Space
+            Place – NASA Science for Kids.” Nasa.gov, 2014, <br />
+            spaceplace.nasa.gov/full-moons/en/.
+          </h3>
+          <h3 id="specialMoonDescription">
+            Image From: Unsplash.<br />
+            unsplash.com/.
+          </h3>
+        </div>
+      </div>
     </div>
+    <img src="images/background5.png" id="background-image5" width="400" style="margin-left: 500;" />
   </body>
   <script>
     const loadData = async () => {
@@ -184,6 +227,7 @@
 
       const handleFilterClick = (moonIndex, svg, event) => {
         event.preventDefault();
+        
         const box = svg.select(`.filter-${moonIndex}`);
         const moonText = svg.select(`.filter-text-${moonIndex}`);
         if (box.attr("fill") === "#7E8187") {
@@ -192,6 +236,15 @@
         } else {
           box.attr("fill", "#7E8187");
           moonText.style("fill", "white");
+        }
+
+        const divSelected = document.getElementById(
+          `specialMoonDescription-${moonIndex}`
+        );
+        if (divSelected.style.display === "none") {
+          divSelected.style.display = "flex";
+        } else {
+          divSelected.style.display = "none";
         }
       };
 
