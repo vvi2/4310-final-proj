@@ -235,6 +235,7 @@
       console.log(daysData);
       console.log(moonData);
       console.log(reverseData);
+      console.log(reverseDaysData);
 
       var currentYear = 2004;
 
@@ -243,6 +244,12 @@
         // find date by using the position of the earth
 
         const e = round(d3.select(".earth").attr("t"));
+        if (reverseDaysData[d3.select(".earth").attr("currentYear")][e]) {
+          d3.select(".earth").attr(
+            "currentDay",
+            reverseDaysData[d3.select(".earth").attr("currentYear")][e]
+          );
+        }
       }
 
       var earthR = 0;
@@ -300,7 +307,6 @@
       }
 
       function rotateEarth(circle) {
-        console.log(currentYear);
         if (currentYear % 1 === 0) {
           d3.select(".earth").attr("currentYear", currentYear);
         }
