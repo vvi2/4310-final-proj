@@ -138,7 +138,12 @@
 
     <div
       id="animations"
-      style="display: flex; justify-content: center; flex-direction: column"
+      style="
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      "
     >
       <svg
         id="mainAnimation"
@@ -146,7 +151,8 @@
         height="750"
         style="margin-top: 15"
       ></svg>
-      <input type="checkbox" id="play-pause" onclick="{play_pause()}" checked />
+      <!-- <input type="checkbox" id="play-pause" onclick="{play_pause()}" checked /> -->
+      <!-- <p class="date">Jan 7</p> -->
     </div>
     <div id="lunarPhasesSummary">
       <h2 style="font-size: 40; margin-left: 200">The Full Moon</h2>
@@ -473,6 +479,9 @@
         }
       }
 
+      const dateField = d3.select(".date");
+      const earth = d3.select(".earth");
+
       function rotateMoonClockwise(circle) {
         circle
           .transition()
@@ -522,6 +531,7 @@
               const radius = 250;
               const newX = 250 + radius * Math.cos(angle);
               const newY = 250 + radius * Math.sin(angle);
+              // dateField.text(d3.select(".earth").attr("currentDay"));
               return `translate(${newX},${newY})`;
             };
           })
