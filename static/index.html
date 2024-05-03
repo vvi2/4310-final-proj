@@ -171,7 +171,7 @@
         style="display: flex; justify-content: center; margin-top: 20"
       ></svg>
       <div
-      id="specialMoonDescription-0"
+        id="specialMoonDescription-0"
         style="
           display: flex;
           flex-direction: row;
@@ -208,8 +208,134 @@
           </h3>
         </div>
       </div>
+      <div
+        id="specialMoonDescription-1"
+        style="
+          display: flex;
+          flex-direction: row;
+          margin-left: 150;
+          margin-top: 50;
+          align-items: center;
+          justify-content: center;
+          display: none;
+        "
+      >
+        <img
+          src="images/bloodMoon.png"
+          id="bloodmoon-img"
+          width="440"
+          height="440"
+        />
+        <div>
+          <h2 id="specialMoon">BLOOD MOON</h2>
+          <p id="specialMoonDescription">
+            One meaning of a "blood moon" is based on its red glow. This blood
+            moon occurs during a total lunar eclipse. During a total lunar
+            eclipse, Earth lines up between the Moon and the Sun. This hides the
+            Moon from the sunlight. When this happens, the only light that
+            reaches the Moon's surface is from the edges of the Earth's
+            atmosphere. The air molecules from Earth's atmosphere scatter out
+            most of the blue light. The remaining light reflects onto the Moon's
+            surface with a red glow, making the Moon appear red in the night
+            sky. The name "blood moon" is also sometimes used for a Moon that
+            appears reddish because of dust, smoke or haze in the sky. And it
+            can be one of the full moons of autumn when the leaves are turning
+            red.
+          </p>
+          <h3 id="specialMoonDescription">
+            “Supermoon, Blood Moon, Blue Moon and Harvest Moon | NASA Space
+            Place – NASA Science for Kids.” Nasa.gov, 2014,
+            spaceplace.nasa.gov/full-moons/en/.
+          </h3>
+          <h3 id="specialMoonDescription">
+            Image From: Unsplash. unsplash.com/.
+          </h3>
+        </div>
+      </div>
+      <div
+        id="specialMoonDescription-2"
+        style="
+          display: flex;
+          flex-direction: row;
+          margin-left: 150;
+          margin-top: 50;
+          align-items: center;
+          justify-content: center;
+          display: none;
+        "
+      >
+        <img
+          src="images/blueMoon.png"
+          id="bluemoon-img"
+          width="440"
+          height="440"
+        />
+        <div>
+          <h2 id="specialMoon">BLUE MOON</h2>
+          <p id="specialMoonDescription">
+            When you hear someone say, "Once in a blue moon …" you know they are
+            talking about something rare. A blue moon is not blue in color. In
+            fact, a blue moon does not look any different than a regular,
+            monthly full moon. Rather, a blue moon is special because it is the
+            "extra" Moon in a season with four full moons. This usually only
+            happens every two-and-a-half years. Since the 1940s, the term "blue
+            moon" has also been used for the second full moon in a calendar
+            month. This usually happens only every two-and-a-half years.
+          </p>
+          <h3 id="specialMoonDescription">
+            “Supermoon, Blood Moon, Blue Moon and Harvest Moon | NASA Space
+            Place – NASA Science for Kids.” Nasa.gov, 2014,
+            spaceplace.nasa.gov/full-moons/en/.
+          </h3>
+          <h3 id="specialMoonDescription">
+            Image From: Unsplash. unsplash.com/.
+          </h3>
+        </div>
+      </div>
+      <div
+        id="specialMoonDescription-3"
+        style="
+          display: flex;
+          flex-direction: row;
+          margin-left: 150;
+          margin-top: 50;
+          align-items: center;
+          justify-content: center;
+          display: none;
+        "
+      >
+        <img
+          src="images/harvestMoon.png"
+          id="harvestmoon-img"
+          width="440"
+          height="440"
+        />
+        <div>
+          <h2 id="specialMoon">HARVEST MOON</h2>
+          <p id="specialMoonDescription">
+            The term "harvest moon" refers to the full, bright Moon that occurs
+            closest to the start of autumn. The name dates from the time before
+            electricity, when farmers depended on the Moon's light to harvest
+            their crops late into the night. The Moon's light was particularly
+            important during fall, when harvests are the largest.
+          </p>
+          <h3 id="specialMoonDescription">
+            “Supermoon, Blood Moon, Blue Moon and Harvest Moon | NASA Space
+            Place – NASA Science for Kids.” Nasa.gov, 2014,
+            spaceplace.nasa.gov/full-moons/en/.
+          </h3>
+          <h3 id="specialMoonDescription">
+            Image From: Unsplash. unsplash.com/.
+          </h3>
+        </div>
+      </div>
     </div>
-    <img src="images/background5.png" id="background-image5" width="400" style="margin-left: 500;" />
+    <img
+      src="images/background5.png"
+      id="background-image5"
+      width="400"
+      style="margin-left: 500"
+    />
   </body>
   <script>
     var earthR = 0;
@@ -247,7 +373,7 @@
 
       const handleFilterClick = (moonIndex, svg, event) => {
         event.preventDefault();
-        
+
         const box = svg.select(`.filter-${moonIndex}`);
         const moonText = svg.select(`.filter-text-${moonIndex}`);
         if (box.attr("fill") === "#7E8187") {
