@@ -84,11 +84,11 @@
         user-select: none;
       }
       #specialMoon {
-        margin-left: 120;
-        margin-top: 80;
+        margin-left: 80;
+        margin-top: 60;
       }
       #specialMoonDescription {
-        margin-left: 120;
+        margin-left: 80;
       }
 
       #tape-Bottom {
@@ -103,6 +103,22 @@
         left: 80;
         position: relative;
         display: inline;
+      }
+      #super-right-Carousel,
+      #blood-right-Carousel,
+      #blue-right-Carousel,
+      #harvest-right-Carousel {
+        z-index: 100;
+        position: relative;
+        margin-left: 70;
+      }
+      #super-left-Carousel,
+      #blood-left-Carousel,
+      #blue-left-Carousel,
+      #harvest-left-Carousel {
+        z-index: 100;
+        position: absolute;
+        margin-right: 1350;
       }
 
       #supermoon-img {
@@ -219,9 +235,21 @@
           display: none;
         "
       >
+        <img
+          src="images/leftArrow.svg"
+          id="super-left-Carousel"
+          alt="Super Left Arrow"
+          width="20"
+        />
         <img src="images/superMoon1.png" id="supermoon-img" width="440" />
         <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" />
         <img src="images/tapeTop.svg" id="tape-Top" width="400" />
+        <img
+          src="images/rightArrow.svg"
+          id="super-right-Carousel"
+          alt="Super Right Arrow"
+          width="20"
+        />
 
         <div>
           <h2 id="specialMoon">SUPER MOON</h2>
@@ -255,9 +283,21 @@
           display: none;
         "
       >
+        <img
+          src="images/leftArrow.svg"
+          id="blood-left-Carousel"
+          alt="Blood Left Arrow"
+          width="20"
+        />
         <img src="images/bloodMoon1.png" id="bloodmoon-img" width="440" />
         <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" />
         <img src="images/tapeTop.svg" id="tape-Top" width="400" />
+        <img
+          src="images/rightArrow.svg"
+          id="blood-right-Carousel"
+          alt="Blood Right Arrow"
+          width="20"
+        />
 
         <div>
           <h2 id="specialMoon">BLOOD MOON</h2>
@@ -297,9 +337,21 @@
           display: none;
         "
       >
+        <img
+          src="images/leftArrow.svg"
+          id="blue-left-Carousel"
+          alt="Blue Left Arrow"
+          width="20"
+        />
         <img src="images/blueMoon1.png" id="bluemoon-img" width="440" />
         <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" />
         <img src="images/tapeTop.svg" id="tape-Top" width="400" />
+        <img
+          src="images/rightArrow.svg"
+          id="blue-right-Carousel"
+          alt="Blue Right Arrow"
+          width="20"
+        />
 
         <div>
           <h2 id="specialMoon">BLUE MOON</h2>
@@ -335,9 +387,21 @@
           display: none;
         "
       >
+        <img
+          src="images/leftArrow.svg"
+          id="harvest-left-Carousel"
+          alt="Harvest Left Arrow"
+          width="20"
+        />
         <img src="images/harvestMoon1.png" id="harvestmoon-img" height="440" />
         <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" />
         <img src="images/tapeTop.svg" id="tape-Top" width="400" />
+        <img
+          src="images/rightArrow.svg"
+          id="harvest-right-Carousel"
+          alt="Harvest Right Arrow"
+          width="20"
+        />
 
         <div>
           <h2 id="specialMoon">HARVEST MOON</h2>
@@ -415,6 +479,7 @@
           `specialMoonDescription-${moonIndex}`
         );
         const indicesNotSelected = findDivsNotSelected(moonIndex);
+
         indicesNotSelected.forEach((ind) => {
           document.getElementById(
             `specialMoonDescription-${ind}`
@@ -467,6 +532,192 @@
       const filters = ["Supermoon", "Blood Moon", "Blue Moon", "Harvest Moon"];
 
       addFilterButtons(filters, filtersSvg);
+
+      //Carousel Logic
+      const carouselNavigate = (moonIndex, imgSrc, direction) => {
+        let newImgSrc;
+        if (moonIndex === 0) {
+          if (imgSrc === "images/superMoon1.png" && direction === "right") {
+            newImgSrc = "images/superMoon2.png";
+          } else if (
+            imgSrc === "images/superMoon1.png" &&
+            direction === "left"
+          ) {
+            newImgSrc = "images/superMoon3.jpeg";
+          } else if (
+            imgSrc === "images/superMoon2.png" &&
+            direction === "right"
+          ) {
+            newImgSrc = "images/superMoon3.jpeg";
+          } else if (
+            imgSrc === "images/superMoon2.png" &&
+            direction === "left"
+          ) {
+            newImgSrc = "images/superMoon1.png";
+          } else if (
+            imgSrc === "images/superMoon3.jpeg" &&
+            direction === "right"
+          ) {
+            newImgSrc = "images/superMoon1.png";
+          } else {
+            newImgSrc = "images/superMoon2.png";
+          }
+        } else if (moonIndex === 1) {
+          if (imgSrc === "images/bloodMoon1.png" && direction === "right") {
+            newImgSrc = "images/bloodMoon2.png";
+          } else if (
+            imgSrc === "images/bloodMoon1.png" &&
+            direction === "left"
+          ) {
+            newImgSrc = "images/bloodMoon3.png";
+          } else if (
+            imgSrc === "images/bloodMoon2.png" &&
+            direction === "right"
+          ) {
+            newImgSrc = "images/bloodMoon3.png";
+          } else if (
+            imgSrc === "images/bloodMoon2.png" &&
+            direction === "left"
+          ) {
+            newImgSrc = "images/bloodMoon1.png";
+          } else if (
+            imgSrc === "images/bloodMoon3.png" &&
+            direction === "right"
+          ) {
+            newImgSrc = "images/bloodMoon1.png";
+          } else {
+            newImgSrc = "images/bloodMoon2.png";
+          }
+        } else if (moonIndex === 2) {
+          if (imgSrc === "images/blueMoon1.png" && direction === "right") {
+            newImgSrc = "images/blueMoon2.png";
+          } else if (
+            imgSrc === "images/blueMoon1.png" &&
+            direction === "left"
+          ) {
+            newImgSrc = "images/blueMoon3.png";
+          } else if (
+            imgSrc === "images/blueMoon2.png" &&
+            direction === "right"
+          ) {
+            newImgSrc = "images/blueMoon3.png";
+          } else if (
+            imgSrc === "images/blueMoon2.png" &&
+            direction === "left"
+          ) {
+            newImgSrc = "images/blueMoon1.png";
+          } else if (
+            imgSrc === "images/blueMoon3.png" &&
+            direction === "right"
+          ) {
+            newImgSrc = "images/blueMoon1.png";
+          } else {
+            newImgSrc = "images/blueMoon2.png";
+          }
+        } else if (moonIndex === 3) {
+          if (imgSrc === "images/harvestMoon1.png" && direction === "right") {
+            newImgSrc = "images/harvestMoon2.png";
+          } else if (
+            imgSrc === "images/harvestMoon1.png" &&
+            direction === "left"
+          ) {
+            newImgSrc = "images/harvestMoon3.png";
+          } else if (
+            imgSrc === "images/harvestMoon2.png" &&
+            direction === "right"
+          ) {
+            newImgSrc = "images/harvestMoon3.png";
+          } else if (
+            imgSrc === "images/harvestMoon2.png" &&
+            direction === "left"
+          ) {
+            newImgSrc = "images/harvestMoon1.png";
+          } else if (
+            imgSrc === "images/harvestMoon3.png" &&
+            direction === "right"
+          ) {
+            newImgSrc = "images/harvestMoon1.png";
+          } else {
+            newImgSrc = "images/harvestMoon2.png";
+          }
+        }
+        return newImgSrc;
+      };
+
+      const superRightArrow = document.getElementById("super-right-Carousel");
+      superRightArrow.addEventListener("click", function () {
+        const img = document.getElementById("supermoon-img");
+        const currentImgSrc = img.getAttribute("src");
+        img.src = carouselNavigate(0, currentImgSrc, "right");
+      });
+
+      const superLeftArrow = document.getElementById("super-left-Carousel");
+      superLeftArrow.addEventListener("click", function () {
+        const img = document.getElementById("supermoon-img");
+        const currentImgSrc = img.getAttribute("src");
+        img.src = carouselNavigate(0, currentImgSrc, "left");
+      });
+
+      const bloodRightArrow = document.getElementById("blood-right-Carousel");
+      bloodRightArrow.addEventListener("click", function () {
+        const img = document.getElementById("bloodmoon-img");
+        const currentImgSrc = img.getAttribute("src");
+        img.src = carouselNavigate(1, currentImgSrc, "right");
+      });
+
+      const bloodLeftArrow = document.getElementById("blood-left-Carousel");
+      bloodLeftArrow.addEventListener("click", function () {
+        const img = document.getElementById("bloodmoon-img");
+        const currentImgSrc = img.getAttribute("src");
+        img.src = carouselNavigate(1, currentImgSrc, "left");
+      });
+
+      const blueRightArrow = document.getElementById("blue-right-Carousel");
+      blueRightArrow.addEventListener("click", function () {
+        const img = document.getElementById("bluemoon-img");
+        const currentImgSrc = img.getAttribute("src");
+        img.src = carouselNavigate(2, currentImgSrc, "right");
+      });
+
+      const blueLeftArrow = document.getElementById("blue-left-Carousel");
+      blueLeftArrow.addEventListener("click", function () {
+        const img = document.getElementById("bluemoon-img");
+        const currentImgSrc = img.getAttribute("src");
+        img.src = carouselNavigate(2, currentImgSrc, "left");
+      });
+
+      const harvestRightArrow = document.getElementById(
+        "harvest-right-Carousel"
+      );
+
+      harvestRightArrow.addEventListener("click", function () {
+        const img = document.getElementById("harvestmoon-img");
+        const currentImgSrc = img.getAttribute("src");
+        const newHarvestSrc = carouselNavigate(3, currentImgSrc, "right");
+        if (newHarvestSrc === "images/harvestMoon2.png") {
+          img.height = 300;
+        } else if (newHarvestSrc === "images/harvestMoon3.png") {
+          img.height = 250;
+        } else {
+          img.height = 440;
+        }
+        img.src = newHarvestSrc;
+      });
+
+      const harvestLeftArrow = document.getElementById("harvest-left-Carousel");
+      harvestLeftArrow.addEventListener("click", function () {
+        const img = document.getElementById("harvestmoon-img");
+        const currentImgSrc = img.getAttribute("src");
+        const newHarvestSrc = carouselNavigate(3, currentImgSrc, "left");
+        if (newHarvestSrc === "images/harvestMoon2.png") {
+          img.height = 300;
+        } else if (newHarvestSrc === "images/harvestMoon3.png") {
+          img.height = 250;
+        } else {
+          img.height = 440;
+        }
+        img.src = newHarvestSrc;
+      });
 
       const round = (num) => parseFloat(num).toFixed(4);
       // Math.round((parseFloat(num) + Number.EPSILON) * 100) / 100;

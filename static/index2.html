@@ -1,0 +1,187 @@
+<html>
+  <head>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Judson"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #474b54;
+        color: white;
+        font-family: "Judson";
+      }
+
+      h1 {
+        font-size: 64;
+        font-weight: 400;
+        margin-top: 280;
+        margin-left: 120;
+      }
+      h2 {
+        font-size: 40;
+        margin-top: 280;
+        margin-left: 200;
+      }
+      h3 {
+        margin-left: 200;
+        font-size: 14;
+      }
+      h4 {
+        text-align: center;
+        margin-top: 160;
+        font-size: 24;
+      }
+      p {
+        margin-left: 200;
+        margin-right: 200;
+        font-weight: lighter;
+        font-size: 22;
+      }
+
+      .display-none {
+        display: none;
+      }
+
+      #footer {
+        text-align: right;
+        margin-bottom: 60px;
+        padding-right: 60px;
+      }
+      #background-image1 {
+        position: absolute;
+        top: 0;
+        left: 340;
+        z-index: -1;
+      }
+      #background-image2 {
+        position: absolute;
+        top: 400;
+        left: 0;
+        z-index: -1;
+      }
+      #background-image3 {
+        position: absolute;
+        top: 1960;
+        left: 0;
+        z-index: -1;
+      }
+      #background-image4 {
+        position: absolute;
+        top: 2120;
+        left: 1040;
+        z-index: -1;
+      }
+      #background-image5 {
+        top: 2600;
+        left: 520;
+      }
+      .button {
+        cursor: pointer;
+        user-select: none;
+      }
+      .button text {
+        user-select: none;
+      }
+      #specialMoon {
+        margin-left: 120;
+        margin-top: 80;
+      }
+      #specialMoonDescription {
+        margin-left: 120;
+      }
+
+      #tape-Bottom {
+        position: relative;
+        display: inline;
+        left: -40;
+        top: 100;
+      }
+
+      #tape-Top {
+        top: -80;
+        left: 80;
+        position: relative;
+        display: inline;
+      }
+
+      #supermoon-img {
+        position: absolute;
+        left: 160;
+      }
+      #bloodmoon-img {
+        position: absolute;
+        left: 160;
+      }
+      #bluemoon-img {
+        position: absolute;
+        left: 160;
+      }
+      #harvestmoon-img {
+        position: absolute;
+        left: 160;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="item active" id="chartArea1"></div>
+        <div class="item" id="chartArea2"></div>
+      </div>
+      <a
+        class="left carousel-control"
+        href="#myCarousel"
+        role="button"
+        data-slide="prev"
+      >
+        <span
+          class="glyphicon glyphicon-chevron-left"
+          aria-hidden="true"
+        ></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a
+        class="right carousel-control"
+        href="#myCarousel"
+        role="button"
+        data-slide="next"
+      >
+        <span
+          class="glyphicon glyphicon-chevron-right"
+          aria-hidden="true"
+        ></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    <!-- /.carousel -->
+  </body>
+  <script>
+    var circle = svg
+      .append("circle")
+      .attr("cx", 300)
+      .attr("cy", 100)
+      .attr("r", 50);
+
+    var svg2 = d3
+      .select("#chartArea2")
+      .append("svg")
+      .attr("width", 400)
+      .attr("height", 200);
+
+    var circle = svg2
+      .append("rect")
+      .attr("x", 250)
+      .attr("y", 50)
+      .attr("width", 100)
+      .attr("height", 100);
+  </script>
+</html>
