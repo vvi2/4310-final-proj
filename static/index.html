@@ -409,26 +409,18 @@
       const handleFilterClick = (moonIndex, svg, event) => {
         event.preventDefault();
 
-        // svg.selectAll("rect").attr("fill", "#7E8187");
-        // svg.selectAll("text").style("fill", "white");
-
-        // svg.select(`.filter-${moonIndex}`).attr("fill", "#DADBDD");
-        // svg.select(`.filter-text-${moonIndex}`).style("fill", "#474B54");
-
         const box = svg.select(`.filter-${moonIndex}`);
         const moonText = svg.select(`.filter-text-${moonIndex}`);
         const divSelected = document.getElementById(
           `specialMoonDescription-${moonIndex}`
         );
         const indicesNotSelected = findDivsNotSelected(moonIndex);
-        console.log(indicesNotSelected);
         indicesNotSelected.forEach((ind) => {
           document.getElementById(
             `specialMoonDescription-${ind}`
           ).style.display = "none";
         });
-        // svg.selectAll("rect").attr("fill", "#7E8187");
-        // svg.selectAll("text").style("fill", "white");
+
         if (box.attr("fill") === "#7E8187") {
           svg.selectAll("rect").attr("fill", "#7E8187");
           svg.selectAll("text").style("fill", "white");
@@ -440,16 +432,6 @@
           moonText.style("fill", "white");
           divSelected.style.display = "none";
         }
-
-        // const divSelected = document.getElementById(
-        //   `specialMoonDescription-${moonIndex}`
-        // );
-
-        // if (divSelected.style.display === "none") {
-        //   divSelected.style.display = "flex";
-        // } else {
-        //   divSelected.style.display = "none";
-        // }
       };
 
       const addFilterButtons = (moonTypes, svg) => {
