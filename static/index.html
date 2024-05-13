@@ -86,7 +86,6 @@
       #specialMoon {
         margin-left: 120;
         margin-top: 80;
-        
       }
       #specialMoonDescription {
         margin-left: 120;
@@ -106,23 +105,22 @@
         display: inline;
       }
 
-      #supermoon-img{
+      #supermoon-img {
         position: absolute;
         left: 160;
       }
-      #bloodmoon-img{
+      #bloodmoon-img {
         position: absolute;
         left: 160;
       }
-      #bluemoon-img{
+      #bluemoon-img {
         position: absolute;
         left: 160;
       }
-      #harvestmoon-img{
+      #harvestmoon-img {
         position: absolute;
         left: 160;
       }
-
     </style>
   </head>
   <body>
@@ -221,14 +219,10 @@
           display: none;
         "
       >
-          <img
-          src="images/superMoon1.png"
-          id="supermoon-img"
-          width="440"
-        />
+        <img src="images/superMoon1.png" id="supermoon-img" width="440" />
         <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" />
         <img src="images/tapeTop.svg" id="tape-Top" width="400" />
-        
+
         <div>
           <h2 id="specialMoon">SUPER MOON</h2>
           <p id="specialMoonDescription">
@@ -261,14 +255,10 @@
           display: none;
         "
       >
-        <img
-        src="images/bloodMoon1.png"
-        id="bloodmoon-img"
-        width="440"
-      />
+        <img src="images/bloodMoon1.png" id="bloodmoon-img" width="440" />
         <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" />
         <img src="images/tapeTop.svg" id="tape-Top" width="400" />
-        
+
         <div>
           <h2 id="specialMoon">BLOOD MOON</h2>
           <p id="specialMoonDescription">
@@ -307,14 +297,10 @@
           display: none;
         "
       >
-        <img
-        src="images/blueMoon1.png"
-        id="bluemoon-img"
-        width="440"
-      />
+        <img src="images/blueMoon1.png" id="bluemoon-img" width="440" />
         <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" />
         <img src="images/tapeTop.svg" id="tape-Top" width="400" />
-        
+
         <div>
           <h2 id="specialMoon">BLUE MOON</h2>
           <p id="specialMoonDescription">
@@ -349,14 +335,10 @@
           display: none;
         "
       >
-        <img
-        src="images/harvestMoon1.png"
-        id="harvestmoon-img"
-        height="440"
-      />
+        <img src="images/harvestMoon1.png" id="harvestmoon-img" height="440" />
         <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" />
         <img src="images/tapeTop.svg" id="tape-Top" width="400" />
-        
+
         <div>
           <h2 id="specialMoon">HARVEST MOON</h2>
           <p id="specialMoonDescription">
@@ -418,27 +400,56 @@
 
       const buttonWidths = [139, 143, 131, 159];
 
+      const findDivsNotSelected = (number) => {
+        const set = new Set([0, 1, 2, 3]);
+        set.delete(number);
+        return Array.from(set);
+      };
+
       const handleFilterClick = (moonIndex, svg, event) => {
         event.preventDefault();
 
+        // svg.selectAll("rect").attr("fill", "#7E8187");
+        // svg.selectAll("text").style("fill", "white");
+
+        // svg.select(`.filter-${moonIndex}`).attr("fill", "#DADBDD");
+        // svg.select(`.filter-text-${moonIndex}`).style("fill", "#474B54");
+
         const box = svg.select(`.filter-${moonIndex}`);
         const moonText = svg.select(`.filter-text-${moonIndex}`);
-        if (box.attr("fill") === "#7E8187") {
-          box.attr("fill", "#DADBDD");
-          moonText.style("fill", "#474B54");
-        } else {
-          box.attr("fill", "#7E8187");
-          moonText.style("fill", "white");
-        }
-
         const divSelected = document.getElementById(
           `specialMoonDescription-${moonIndex}`
         );
-        if (divSelected.style.display === "none") {
+        const indicesNotSelected = findDivsNotSelected(moonIndex);
+        console.log(indicesNotSelected);
+        indicesNotSelected.forEach((ind) => {
+          document.getElementById(
+            `specialMoonDescription-${ind}`
+          ).style.display = "none";
+        });
+        // svg.selectAll("rect").attr("fill", "#7E8187");
+        // svg.selectAll("text").style("fill", "white");
+        if (box.attr("fill") === "#7E8187") {
+          svg.selectAll("rect").attr("fill", "#7E8187");
+          svg.selectAll("text").style("fill", "white");
+          box.attr("fill", "#DADBDD");
+          moonText.style("fill", "#474B54");
           divSelected.style.display = "flex";
         } else {
+          box.attr("fill", "#7E8187");
+          moonText.style("fill", "white");
           divSelected.style.display = "none";
         }
+
+        // const divSelected = document.getElementById(
+        //   `specialMoonDescription-${moonIndex}`
+        // );
+
+        // if (divSelected.style.display === "none") {
+        //   divSelected.style.display = "flex";
+        // } else {
+        //   divSelected.style.display = "none";
+        // }
       };
 
       const addFilterButtons = (moonTypes, svg) => {
