@@ -89,6 +89,7 @@
       }
       #specialMoonDescription {
         margin-left: 80;
+        margin-right: 120;
       }
 
       #tape-Bottom {
@@ -110,7 +111,7 @@
       #harvest-right-Carousel {
         z-index: 100;
         position: relative;
-        margin-left: 70;
+        margin-left: 80;
       }
       #super-left-Carousel,
       #blood-left-Carousel,
@@ -118,25 +119,21 @@
       #harvest-left-Carousel {
         z-index: 100;
         position: absolute;
-        margin-right: 1350;
+        margin-right: 1348;
       }
 
-      #supermoon-img {
+      #supermoon-img,
+      #bloodmoon-img,
+      #bluemoon-img,
+      #harvestmoon-img{
         position: absolute;
         left: 160;
       }
-      #bloodmoon-img {
-        position: absolute;
-        left: 160;
+     
+      #harvestmoon-img{
+        padding-top: 60;
       }
-      #bluemoon-img {
-        position: absolute;
-        left: 160;
-      }
-      #harvestmoon-img {
-        position: absolute;
-        left: 160;
-      }
+      
     </style>
   </head>
   <body>
@@ -392,19 +389,21 @@
           id="harvest-left-Carousel"
           alt="Harvest Left Arrow"
           width="20"
+          style="padding-top: 60"
         />
-        <img src="images/harvestMoon1.png" id="harvestmoon-img" height="440" />
-        <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" />
-        <img src="images/tapeTop.svg" id="tape-Top" width="400" />
+        <img src="images/harvestMoon1.png" id="harvestmoon-img" height="440" margin-top="200"/>
+        <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" style="padding-top: 60"/>
+        <img src="images/tapeTop.svg" id="tape-Top" width="400" style="padding-top: 60" />
         <img
           src="images/rightArrow.svg"
           id="harvest-right-Carousel"
           alt="Harvest Right Arrow"
           width="20"
+          style="padding-top: 60"
         />
 
         <div>
-          <h2 id="specialMoon">HARVEST MOON</h2>
+          <h2 id="specialMoon" style="margin-top: 60">HARVEST MOON</h2>
           <p id="specialMoonDescription">
             The term "harvest moon" refers to the full, bright Moon that occurs
             closest to the start of autumn. The name dates from the time before
@@ -427,7 +426,8 @@
       src="images/background5.png"
       id="background-image5"
       width="400"
-      style="margin-left: 500"
+      height="240"
+      style="object-fit:cover ;object-position: top ;margin-left: 500; margin-top: 200; "
     />
   </body>
   <script>
