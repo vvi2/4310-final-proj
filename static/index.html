@@ -125,15 +125,20 @@
       #supermoon-img,
       #bloodmoon-img,
       #bluemoon-img,
-      #harvestmoon-img{
+      #harvestmoon-img {
         position: absolute;
         left: 160;
       }
-     
-      #harvestmoon-img{
+
+      #harvestmoon-img {
         padding-top: 60;
       }
-      
+
+      .ETimeline,
+      #reset,
+      #fastForward {
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -192,11 +197,36 @@
       <svg
         id="mainAnimation"
         width="1300"
-        height="750"
+        height="800"
         style="margin-top: 15"
       ></svg>
-      <!-- <input type="checkbox" id="play-pause" onclick="{play_pause()}" checked /> -->
-      <!-- <p class="date">Jan 7</p> -->
+      <div style="display: flex; flex-direction: column; width: 1300">
+        <img
+          id="reset"
+          src="images/playIcon.png"
+          width="25"
+          style="margin: 10px"
+          title="Reset Button"
+        />
+        <!-- <img
+          id="fastForward"
+          src="images/fastforward.png"
+          width="25"
+          style="margin: 10px"
+        /> -->
+        <button
+          id="fastForward"
+          style="
+            margin: 10px;
+            background-color: #7e8187;
+            border: none;
+            width: 120px;
+            height: 30px;
+          "
+        >
+          Fast Forward (2x)
+        </button>
+      </div>
     </div>
     <div id="lunarPhasesSummary">
       <h2 style="font-size: 40; margin-left: 200">The Full Moon</h2>
@@ -391,9 +421,24 @@
           width="20"
           style="padding-top: 60"
         />
-        <img src="images/harvestMoon1.png" id="harvestmoon-img" height="440" margin-top="200"/>
-        <img src="images/tapeBottom.svg" id="tape-Bottom" width="400" style="padding-top: 60"/>
-        <img src="images/tapeTop.svg" id="tape-Top" width="400" style="padding-top: 60" />
+        <img
+          src="images/harvestMoon1.png"
+          id="harvestmoon-img"
+          height="440"
+          margin-top="200"
+        />
+        <img
+          src="images/tapeBottom.svg"
+          id="tape-Bottom"
+          width="400"
+          style="padding-top: 60"
+        />
+        <img
+          src="images/tapeTop.svg"
+          id="tape-Top"
+          width="400"
+          style="padding-top: 60"
+        />
         <img
           src="images/rightArrow.svg"
           id="harvest-right-Carousel"
@@ -427,29 +472,18 @@
       id="background-image5"
       width="400"
       height="240"
-      style="object-fit:cover ;object-position: top ;margin-left: 500; margin-top: 200; "
+      style="
+        object-fit: cover;
+        object-position: top;
+        margin-left: 500;
+        margin-top: 200;
+      "
     />
   </body>
   <script>
-    var earthR = 0;
-    var moonCircleR = 0;
-    var moonR = 0;
-
-    function play_pause() {
-      if (document.getElementById("play-pause").checked) {
-        // PLAY
-        // d3.selectAll("circle").transition();
-        console.log("earthR", earthR);
-        console.log("moonCircleR", moonCircleR);
-        console.log("moonR", moonR);
-      } else {
-        // PAUSE
-        // d3.selectAll("circle").interrupt();
-        earthR = d3.select(".earth").attr("t");
-        moonCircleR = d3.select(".moonRotation").attr("t");
-        moonR = d3.select(".moon").attr("t");
-      }
-    }
+    var earthR = -1;
+    var moonCircleR = -1;
+    var moonR = -1;
 
     const loadData = async () => {
       const daysData = await d3.json("data/days.json");
@@ -461,6 +495,209 @@
 
       const animationSvg = d3.select("#mainAnimation");
       const filtersSvg = d3.select("#fullMoonFilters");
+      const timeL = d3.select(".timeline");
+
+      const round = (num) => parseFloat(num).toFixed(4);
+      // Math.round((parseFloat(num) + Number.EPSILON) * 100) / 100;
+
+      var currentYear = 2004;
+
+      function calculatePhase() {
+        // instead of using moon and earth position to find what moon it is, use the dataset to determine the phase based on the date
+        // find date by using the position of the earth
+
+        const earth = d3.select(".earth");
+
+        const e = round(earth.attr("t"));
+        if (reverseDaysData[earth.attr("currentYear")][e]) {
+          earth.attr(
+            "currentDay",
+            reverseDaysData[earth.attr("currentYear")][e]
+          );
+        }
+
+        if (moonData[earth.attr("currentYear")][earth.attr("currentDay")]) {
+          const moonType =
+            moonData[earth.attr("currentYear")][earth.attr("currentDay")];
+          const moonTypes = [
+            "New Moon",
+            "First Quarter",
+            "Full Moon",
+            "Third Quarter",
+          ];
+          const convMoonTypes = {
+            "New Moon": "newMoon",
+            "First Quarter": "firstQuarter",
+            "Full Moon": "fullMoon",
+            "Third Quarter": "thirdQuarter",
+          };
+          moonTypes.forEach((type) => {
+            const moon = d3.select(`.${convMoonTypes[type]}`);
+            if (moonType === type) {
+              moon.classed("display-none", false);
+            } else {
+              moon.classed("display-none", true);
+            }
+          });
+        }
+      }
+
+      function play_pause(event, earthD = 73048, moonD = 5464) {
+        // actually a reset function
+        currentYear = 2004;
+        eD = earthD;
+        mD = moonD;
+        d3.selectAll(".moon").interrupt();
+        d3.selectAll(".earth").interrupt();
+        d3.selectAll(".moonRotation").interrupt();
+        rotateMoonClockwise(d3.select(".moon"), moonD);
+        rotateEarth(d3.select(".earth"), earthD);
+        rotateEarth(d3.select(".moonRotation"), earthD);
+      }
+      var eD = 73048;
+      var mD = 5464;
+
+      function fastForward() {
+        eD /= 2;
+        mD /= 2;
+        console.log(eD, mD);
+        play_pause(null, eD, mD);
+      }
+
+      const earth = d3.select(".earth");
+
+      function rotateMoonClockwise(circle, duration = 5464) {
+        circle
+          .transition()
+          .duration(duration)
+          .ease(d3.easeLinear)
+          .attrTween("transform", function () {
+            return function (t) {
+              circle.attr("t", t);
+              const angle = t * 2 * Math.PI;
+              const radius = 80;
+              var earthX = 0;
+              var earthY = 0;
+              const earthT = d3.select(".earth").attr("transform");
+              if (earthT !== null) {
+                const split1 = earthT.split("(");
+                if (split1.length > 1) {
+                  const split2 = split1[1].split(")")[0];
+                  const split3 = split2.split(",");
+                  earthX = parseFloat(split3[0]);
+                  earthY = parseFloat(split3[1]);
+                }
+              }
+
+              const newX = 80 + radius * Math.cos(angle) + earthX;
+              const newY = 0 + radius * Math.sin(angle) + earthY;
+              calculatePhase();
+              return `translate(${newX},${newY})`;
+            };
+          })
+          .on("end", function () {
+            rotateMoonClockwise(circle, duration);
+          });
+      }
+      year_mapping = {
+        2004: 1,
+        2005: 2,
+        2006: 3,
+        2007: 4,
+        2008: 5,
+        2009: 6,
+        2010: 7,
+        2011: 8,
+        2012: 9,
+        2013: 10,
+        2014: 11,
+        2015: 12,
+        2016: 13,
+        2017: 14,
+        2018: 15,
+        2019: 16,
+        2020: 17,
+        2021: 18,
+        2022: 19,
+        2023: 20,
+        2024: 21,
+        2025: 22,
+        2026: 23,
+        2027: 24,
+        2028: 25,
+        2029: 26,
+        2030: 27,
+        2031: 28,
+        2032: 29,
+        2033: 30,
+        2034: 31,
+        2035: 32,
+        2036: 33,
+        2037: 34,
+        2038: 35,
+        2039: 36,
+        2040: 37,
+        2041: 38,
+        2042: 39,
+        2043: 40,
+        2044: 41,
+      };
+
+      function rotateEarth(circle, duration = 73048) {
+        // const timelineScale = d3
+        //   .scaleLinear()
+        //   .domain([0, 40 * duration])
+        //   .range([0, 660]);
+        const timelineScale = d3
+          .scaleLinear()
+          .domain([0, duration * 40])
+          .range([0, 660]);
+        if (currentYear % 1 === 0) {
+          d3.select(".earth").attr("currentYear", currentYear);
+        }
+        circle
+          .transition()
+          .duration(duration)
+          .ease(d3.easeLinear)
+          .attrTween("transform", function () {
+            return function (t) {
+              circle.attr("t", t);
+              const year = d3.select(".earth").attr("currentYear");
+              const marker = d3.select(".ETimeline");
+              const dateField = d3.select(".dateField");
+              dateField.text(year);
+              marker.attr("duration", duration);
+              marker.attr(
+                "transform",
+                `translate(${timelineScale(
+                  t * duration + (year_mapping[parseInt(year)] - 1) * duration
+                )} , 0)`
+              );
+              dateField.attr(
+                "transform",
+                `translate(${timelineScale(
+                  t * duration + (year_mapping[parseInt(year)] - 1) * duration
+                )} , 0)`
+              );
+              const angle = t * 2 * Math.PI;
+              const radius = 250;
+              const newX = 250 + radius * Math.cos(angle);
+              const newY = 250 + radius * Math.sin(angle);
+              // dateField.text(
+              //   typeof d3.select(".earth").attr("currentDay") === "string"
+              //     ? d3.select(".earth").attr("currentDay").split(" ")[0] +
+              //         " " +
+              //         d3.select(".earth").attr("currentYear")
+              //     : "Jan 2004"
+              // );
+              return `translate(${newX},${newY})`;
+            };
+          })
+          .on("end", function () {
+            rotateEarth(circle, duration);
+          });
+        currentYear += 0.5;
+      }
 
       const buttonWidths = [139, 143, 131, 159];
 
@@ -719,113 +956,6 @@
         img.src = newHarvestSrc;
       });
 
-      const round = (num) => parseFloat(num).toFixed(4);
-      // Math.round((parseFloat(num) + Number.EPSILON) * 100) / 100;
-
-      var currentYear = 2004;
-
-      function calculatePhase() {
-        // instead of using moon and earth position to find what moon it is, use the dataset to determine the phase based on the date
-        // find date by using the position of the earth
-
-        const earth = d3.select(".earth");
-
-        const e = round(earth.attr("t"));
-        if (reverseDaysData[earth.attr("currentYear")][e]) {
-          earth.attr(
-            "currentDay",
-            reverseDaysData[earth.attr("currentYear")][e]
-          );
-        }
-
-        if (moonData[earth.attr("currentYear")][earth.attr("currentDay")]) {
-          const moonType =
-            moonData[earth.attr("currentYear")][earth.attr("currentDay")];
-          const moonTypes = [
-            "New Moon",
-            "First Quarter",
-            "Full Moon",
-            "Third Quarter",
-          ];
-          const convMoonTypes = {
-            "New Moon": "newMoon",
-            "First Quarter": "firstQuarter",
-            "Full Moon": "fullMoon",
-            "Third Quarter": "thirdQuarter",
-          };
-          moonTypes.forEach((type) => {
-            const moon = d3.select(`.${convMoonTypes[type]}`);
-            if (moonType === type) {
-              moon.classed("display-none", false);
-            } else {
-              moon.classed("display-none", true);
-            }
-          });
-        }
-      }
-
-      const dateField = d3.select(".date");
-      const earth = d3.select(".earth");
-
-      function rotateMoonClockwise(circle) {
-        circle
-          .transition()
-          .duration(5464)
-          .ease(d3.easeLinear)
-          .attrTween("transform", function () {
-            return function (t) {
-              circle.attr("t", t);
-              const angle = t * 2 * Math.PI;
-              const radius = 80;
-              var earthX = 0;
-              var earthY = 0;
-              const earthT = d3.select(".earth").attr("transform");
-              if (earthT !== null) {
-                const split1 = earthT.split("(");
-                if (split1.length > 1) {
-                  const split2 = split1[1].split(")")[0];
-                  const split3 = split2.split(",");
-                  earthX = parseFloat(split3[0]);
-                  earthY = parseFloat(split3[1]);
-                }
-              }
-
-              const newX = 80 + radius * Math.cos(angle) + earthX;
-              const newY = 0 + radius * Math.sin(angle) + earthY;
-              calculatePhase();
-              return `translate(${newX},${newY})`;
-            };
-          })
-          .on("end", function () {
-            rotateMoonClockwise(circle);
-          });
-      }
-
-      function rotateEarth(circle) {
-        if (currentYear % 1 === 0) {
-          d3.select(".earth").attr("currentYear", currentYear);
-        }
-        circle
-          .transition()
-          .duration(73048)
-          .ease(d3.easeLinear)
-          .attrTween("transform", function () {
-            return function (t) {
-              circle.attr("t", t);
-              const angle = t * 2 * Math.PI;
-              const radius = 250;
-              const newX = 250 + radius * Math.cos(angle);
-              const newY = 250 + radius * Math.sin(angle);
-              // dateField.text(d3.select(".earth").attr("currentDay"));
-              return `translate(${newX},${newY})`;
-            };
-          })
-          .on("end", function () {
-            rotateEarth(circle);
-          });
-        currentYear += 0.5;
-      }
-
       const canvas = animationSvg
         .append("g")
         .attr("class", `moonCycle`)
@@ -868,6 +998,13 @@
         .attr("cy", -5)
         .attr("stroke-dasharray", "6,6")
         .call(rotateEarth);
+
+      const timeline = animationSvg
+        .append("g")
+        .attr("class", "timeline")
+        .attr("transform", "translate(300, 750)");
+      timeline.append("image").attr("xlink:href", "images/timeline.png");
+
       const moon = canvas
         .append("image")
         .attr("class", "moon")
@@ -918,6 +1055,33 @@
         .attr("height", 300)
         .attr("x", 50)
         .attr("y", 85);
+      d3.select("#reset").on("click", play_pause);
+      d3.select("#fastForward").on("click", fastForward);
+
+      d3.select(".timeline")
+        .append("image")
+        .attr("class", "ETimeline")
+        .attr("xlink:href", "images/earth.png")
+        .attr("x", 8)
+        .attr("y", 3)
+        .attr("width", 15)
+        .attr("height", 15)
+        .on("mouseover", function () {
+          d3.select(".dateField").classed("display-none", false);
+        })
+        .on("mouseout", function () {
+          d3.select(".dateField").classed("display-none", true);
+        });
+
+      d3.select(".timeline")
+        .append("text")
+        .attr("class", "dateField")
+        .text("2004")
+        .attr("x", -4)
+        .attr("y", 0)
+        .style("fill", "white")
+        .style("font-size", "20px")
+        .classed("display-none", true);
     };
 
     loadData();
